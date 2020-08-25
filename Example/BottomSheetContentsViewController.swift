@@ -42,10 +42,12 @@ class BottomSheetContentsViewController: UIViewController {
     }()
     private let forwardImageView: UIImageView = {
         let forwardImageView = UIImageView(image: UIImage(systemName: "forward.fill"))
+        forwardImageView.tintColor = .tertiarySystemFill
         return forwardImageView
     }()
     private let backwardImageView: UIImageView = {
         let backwardImageView = UIImageView(image: UIImage(systemName: "backward.fill"))
+        backwardImageView.tintColor = .tertiarySystemFill
         return backwardImageView
     }()
     private let airPlayImageView: UIImageView = {
