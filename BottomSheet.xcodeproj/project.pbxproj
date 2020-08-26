@@ -18,6 +18,7 @@
 		C218753E24F4E22E00662DBB /* BottomSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C21874FC24F4DC3800662DBB /* BottomSheet.framework */; };
 		C218753F24F4E22E00662DBB /* BottomSheet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C21874FC24F4DC3800662DBB /* BottomSheet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C288085424F4E30C0061A525 /* BottomSheetContentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C288085324F4E30C0061A525 /* BottomSheetContentsViewController.swift */; };
+		C288085624F559BC0061A525 /* StateEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C288085524F559BC0061A525 /* StateEnum.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		C218753724F4E16E00662DBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C218753924F4E16E00662DBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C288085324F4E30C0061A525 /* BottomSheetContentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetContentsViewController.swift; sourceTree = "<group>"; };
+		C288085524F559BC0061A525 /* StateEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateEnum.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 			children = (
 				C21874FF24F4DC3800662DBB /* BottomSheet.h */,
 				C218750924F4DCC800662DBB /* BottomSheetViewController.swift */,
+				C288085524F559BC0061A525 /* StateEnum.swift */,
 				C218750B24F4DCDD00662DBB /* PopoverViewController.swift */,
 				C218750024F4DC3800662DBB /* Info.plist */,
 			);
@@ -243,6 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C218750C24F4DCDE00662DBB /* PopoverViewController.swift in Sources */,
+				C288085624F559BC0061A525 /* StateEnum.swift in Sources */,
 				C218750A24F4DCC800662DBB /* BottomSheetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
