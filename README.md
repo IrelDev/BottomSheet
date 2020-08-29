@@ -7,7 +7,7 @@ Bottom sheet popover built with Swift & UIKit
 ## Installation
 
 ### Manually
-If you prefer not to use any dependency managers, you can integrate TelegramColorPicker into your project manually by downloading the desired release and copying the `Sources` directory.
+If you prefer not to use any dependency managers, you can integrate BottomSheet into your project manually by downloading the desired release and copying the `Sources` directory.
 
 ## Usage
 
