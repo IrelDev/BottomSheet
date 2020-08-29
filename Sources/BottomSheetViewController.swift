@@ -12,8 +12,31 @@ open class BottomSheetViewController: UIViewController {
     public var animationDuration = 0.45
     public var viewController: UIViewController?
     
+    public var isHalfPresentationEnabled = false {
+        didSet {
+            if isHalfPresentationEnabled == true {
+                animationDuration = animationDuration / 2
+            }
+        }
+    }
+    
     var nextState: State {
-        isPopoverVisible ? .collapsed : .expanded
+        var nextState: State
+        if !isHalfPresentationEnabled {
+            nextState = isPopoverVisible ? .collapsed : .expanded
+        } else {
+            if isPopoverHalfPresented {
+                if isPopoverVisible {
+                    nextState = .collapsed
+                } else {
+                    nextState = .expanded
+                }
+            } else {
+                nextState = .halfPresented
+            }
+        }
+        
+        return nextState
     }
     
     var popoverViewController: PopoverViewController!
@@ -23,6 +46,7 @@ open class BottomSheetViewController: UIViewController {
     var startHeight: CGFloat = 0
     
     var isPopoverVisible = false
+    var isPopoverHalfPresented = false
     
     var runningAnimations = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted: CGFloat = 0
@@ -120,7 +144,9 @@ open class BottomSheetViewController: UIViewController {
                 return
             } else if lastCompletedFraction < 0.5 {
                 var state: State
-                if nextState == .collapsed {
+                if isHalfPresentationEnabled { //Have issues with returning popover to its previous state
+                    state = nextState
+                } else if nextState == .collapsed {
                     state = .expanded
                 } else {
                     state = .collapsed
@@ -146,14 +172,21 @@ open class BottomSheetViewController: UIViewController {
                 case .expanded:
                     self.popoverViewController.view.frame.origin.y = self.view.frame.height - self.endHeight
                     self.visualEffectView.effect = UIBlurEffect(style: .dark)
-                    
                 case .collapsed:
                     self.popoverViewController.view.frame.origin.y = self.view.frame.height - self.startHeight
+                    self.visualEffectView.effect = nil
+                case .halfPresented:
+                    self.popoverViewController.view.frame.origin.y = self.view.frame.height - self.endHeight / 2
                     self.visualEffectView.effect = nil
                 }
             }
             frameAnimator.addCompletion { _ in
-                self.isPopoverVisible.toggle()
+                if state == .halfPresented {
+                    self.isPopoverHalfPresented = true
+                } else {
+                    self.isPopoverHalfPresented = false
+                    self.isPopoverVisible.toggle()
+                }
                 self.view.gestureRecognizers?.forEach {
                     $0.isEnabled.toggle()
                 }
@@ -168,16 +201,20 @@ open class BottomSheetViewController: UIViewController {
             let cornerRadiusAnimator = UIViewPropertyAnimator(duration: duration, curve: .linear) {
                 switch state {
                 case .expanded:
-                    self.popoverViewController.view.layer.cornerRadius = 10
-                    self.popoverViewController.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-                    
+                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: 10)
                 case .collapsed:
                     self.popoverViewController.view.layer.cornerRadius = 0
+                case .halfPresented:
+                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: 5)
                 }
             }
             cornerRadiusAnimator.startAnimation()
             runningAnimations.append(cornerRadiusAnimator)
         }
+    }
+    func makeTopRoundCorners(uiView: UIView, radius: CGFloat) {
+        uiView.layer.cornerRadius = radius
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     func startInteractiveTransition(state: State, duration: TimeInterval) {
         if runningAnimations.isEmpty {

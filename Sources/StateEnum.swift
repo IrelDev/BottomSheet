@@ -8,5 +8,5 @@
 enum State {
     case collapsed
     case expanded
-    // halfPresented
+    case halfPresented
 }
