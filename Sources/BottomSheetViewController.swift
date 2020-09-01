@@ -35,7 +35,6 @@ open class BottomSheetViewController: UIViewController {
                 nextState = .halfPresented
             }
         }
-        
         return nextState
     }
     
@@ -138,28 +137,15 @@ open class BottomSheetViewController: UIViewController {
             } else {
                 correctedVelocity = velocity
             }
-            
             if correctedVelocity > 5 {
                 continueInteractiveTransition()
                 return
             } else if lastCompletedFraction < 0.5 {
-                var state: State
-                if isHalfPresentationEnabled { //Have issues with returning popover to its previous state
-                    state = nextState
-                } else if nextState == .collapsed {
-                    state = .expanded
-                } else {
-                    state = .collapsed
-                }
                 runningAnimations.forEach {
-                    $0.stopAnimation(false)
-                    $0.finishAnimation(at: .current)
+                    $0.isReversed = true
                 }
-                startInteractiveTransition(state: state, duration: duration)
-                continueInteractiveTransition()
-            } else {
-                continueInteractiveTransition()
             }
+            continueInteractiveTransition()
         default:
             break
         }
@@ -181,11 +167,18 @@ open class BottomSheetViewController: UIViewController {
                 }
             }
             frameAnimator.addCompletion { _ in
+                if frameAnimator.isReversed {
+                    self.runningAnimations.removeAll()
+                    return
+                }
                 if state == .halfPresented {
                     self.isPopoverHalfPresented = true
-                } else {
-                    self.isPopoverHalfPresented = false
-                    self.isPopoverVisible.toggle()
+                } else { self.isPopoverHalfPresented = false }
+                
+                if state == .expanded {
+                    self.isPopoverVisible = true
+                } else if state == .collapsed {
+                    self.isPopoverVisible = false
                 }
                 self.view.gestureRecognizers?.forEach {
                     $0.isEnabled.toggle()
