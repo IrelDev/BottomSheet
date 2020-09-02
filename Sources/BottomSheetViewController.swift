@@ -115,22 +115,45 @@ open class BottomSheetViewController: UIViewController {
             break
         }
     }
-    @objc func handlePopoverSlide (recognizer: UIPanGestureRecognizer) {
+    @objc func handlePopoverSlide(recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
-            startInteractiveTransition(state: nextState, duration: animationDuration)
+            if !isHalfPresentationEnabled || nextState == .halfPresented {
+                startInteractiveTransition(state: nextState, duration: animationDuration)
+            }
         case .changed:
             let translation = recognizer.translation(in: self.popoverViewController.view)
-            var fractionComplete = translation.y / endHeight
-            fractionComplete = isPopoverVisible ? fractionComplete : -fractionComplete
-            
-            lastCompletedFraction = Double(fractionComplete)
-            updateInteractiveTransition(fractionCompleted: fractionComplete)
+            if !isHalfPresentationEnabled || nextState == .halfPresented {
+                var fractionComplete = translation.y / endHeight
+                fractionComplete = isPopoverVisible ? fractionComplete : -fractionComplete
+                
+                lastCompletedFraction = Double(fractionComplete)
+                updateInteractiveTransition(fractionCompleted: fractionComplete)
+            } else {
+                let maximumHeight = self.view.frame.height - self.endHeight / 2
+                let newY = popoverViewController.view.center.y + translation.y
+                
+                guard newY >= maximumHeight else { return }
+                popoverViewController.view.center.y = popoverViewController.view.center.y + translation.y
+                recognizer.setTranslation(CGPoint.zero, in: self.view)
+            }
         case .ended:
-            let duration = calculateAnimationTimeLeft(fraction: lastCompletedFraction)
+            let duration: Double
+            let velocity = recognizer.velocity(in: view).y / 60
+            
+            if isHalfPresentationEnabled {
+                if velocity > 0 {
+                    animateTransitionIfNeeded(for: .collapsed, duration: animationDuration)
+                } else {
+                    animateTransitionIfNeeded(for: .expanded, duration: animationDuration)
+                }
+                duration = animationDuration
+                updateInteractiveTransition(fractionCompleted: 0)
+            } else {
+                duration = calculateAnimationTimeLeft(fraction: lastCompletedFraction)
+            }
             disableViewControllerGestures(for: duration)
             
-            let velocity = recognizer.velocity(in: view).y / 60
             var correctedVelocity: CGFloat
             if velocity < 0 {
                 correctedVelocity = -velocity
@@ -140,9 +163,13 @@ open class BottomSheetViewController: UIViewController {
             if correctedVelocity > 5 {
                 continueInteractiveTransition()
                 return
-            } else if lastCompletedFraction < 0.5 {
-                runningAnimations.forEach {
-                    $0.isReversed = true
+            }
+            
+            else if lastCompletedFraction < 0.5 {
+                if !isHalfPresentationEnabled || nextState == .halfPresented {
+                    runningAnimations.forEach {
+                        $0.isReversed = true
+                    }
                 }
             }
             continueInteractiveTransition()
@@ -157,13 +184,16 @@ open class BottomSheetViewController: UIViewController {
                 switch state {
                 case .expanded:
                     self.popoverViewController.view.frame.origin.y = self.view.frame.height - self.endHeight
-                    self.visualEffectView.effect = UIBlurEffect(style: .dark)
+                    if !self.isHalfPresentationEnabled {
+                        self.visualEffectView.effect = UIBlurEffect(style: .dark)
+                    }
                 case .collapsed:
                     self.popoverViewController.view.frame.origin.y = self.view.frame.height - self.startHeight
-                    self.visualEffectView.effect = nil
+                    if !self.isHalfPresentationEnabled {
+                        self.visualEffectView.effect = nil
+                    }
                 case .halfPresented:
                     self.popoverViewController.view.frame.origin.y = self.view.frame.height - self.endHeight / 2
-                    self.visualEffectView.effect = nil
                 }
             }
             frameAnimator.addCompletion { _ in
@@ -179,12 +209,6 @@ open class BottomSheetViewController: UIViewController {
                     self.isPopoverVisible = true
                 } else if state == .collapsed {
                     self.isPopoverVisible = false
-                }
-                self.view.gestureRecognizers?.forEach {
-                    $0.isEnabled.toggle()
-                }
-                self.navigationController?.navigationBar.gestureRecognizers?.forEach {
-                    $0.isEnabled.toggle()
                 }
                 self.runningAnimations.removeAll()
             }
