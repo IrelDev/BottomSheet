@@ -17,11 +17,12 @@ Subclass `BottomSheetViewController`, then override viewDidLoad like this:
 class ViewController: BottomSheetViewController {
     override func viewDidLoad() {
         viewController = BottomSheetContentsViewController() //your view controller
+        isHalfPresentationEnabled = true //or false
         super.viewDidLoad()
     }
 }
 ```
-Note that `super.viewDidLoad()` must be called after you set viewController property.
+Note that `super.viewDidLoad()` must be called after you set BottomSheetViewController properties.
 
 ### Enable Half Presentation
 To enable half presentation set `isHalfPresentationEnabled` property to `true`.
