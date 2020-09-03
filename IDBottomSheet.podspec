@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name         = "BottomSheet"
+  s.name         = "IDBottomSheet"
   s.version      = "2.0.0"
   s.summary      = "Bottom sheet popover built with Swift & UIKit."
   s.homepage     = "https://github.com/IrelDev/BottomSheet"

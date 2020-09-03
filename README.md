@@ -2,9 +2,22 @@
 Bottom sheet popover built with Swift & UIKit
 
 <p align="center">  
-<img src = "Assets/Logo.png" />
+    <img src = "Assets/Logo.png" /> <br>
+    <img src = "https://img.shields.io/badge/platform-iOS%2011.0%2B-lightgrey" />
+    <img src = "https://img.shields.io/badge/swift-5.0-orange.svg" />
+    <img src = "https://img.shields.io/badge/cocoapods-✔-green.svg" />
+    <img src = "https://img.shields.io/badge/license-MIT-blue.svg" />
+</p>
 
 ## Installation
+
+### CocoaPods
+[CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. To integrate BottomSheet into your project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+pod 'IDBottomSheet'
+```
+After that use `pod install` command in your terminal.
 
 ### Manually
 If you prefer not to use any dependency managers, you can integrate BottomSheet into your project manually by downloading the desired release and copying the `Sources` directory.
