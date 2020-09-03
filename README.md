@@ -11,6 +11,14 @@ Bottom sheet popover built with Swift & UIKit
 
 ## Installation
 
+### CocoaPods
+[CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. To integrate BottomSheet into your project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+pod 'IDBottomSheet'
+```
+After that use `pod install` command in your terminal.
+
 ### Manually
 If you prefer not to use any dependency managers, you can integrate BottomSheet into your project manually by downloading the desired release and copying the `Sources` directory.
 
