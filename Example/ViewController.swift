@@ -24,6 +24,7 @@ class ViewController: BottomSheetViewController {
         label.center = view.center
         view.addSubview(label)
         
+        isHalfPresentationEnabled = false
         viewController = BottomSheetContentsViewController()
         super.viewDidLoad()
     }
