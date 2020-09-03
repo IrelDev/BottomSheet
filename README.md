@@ -2,7 +2,12 @@
 Bottom sheet popover built with Swift & UIKit
 
 <p align="center">  
-<img src = "Assets/Logo.png" />
+    <img src = "Assets/Logo.png" />
+    <img src = "https://img.shields.io/badge/platform-iOS%2011.0%2B-lightgrey" />
+    <img src = "https://img.shields.io/badge/swift-5.0-orange.svg" />
+    <img src = "https://img.shields.io/badge/cocoapods-✔-green.svg" />
+    <img src = "https://img.shields.io/badge/license-MIT-blue.svg" />
+</p>
 
 ## Installation
 
