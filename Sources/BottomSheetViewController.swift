@@ -76,6 +76,16 @@ open class BottomSheetViewController: UIViewController {
         halfPresentedCornerRadius = halfPresented
         expandedCornerRadius = expanded
     }
+    public func setupCornerRadiusForState(state: State, value: CGFloat) {
+        switch state {
+        case .collapsed:
+            collapsedCornerRadius = value
+        case .halfPresented:
+            halfPresentedCornerRadius = value
+        case .expanded:
+            expandedCornerRadius = value
+        }
+    }
     func setupPopover() {
         visualEffectView = UIVisualEffectView()
         visualEffectView.frame = self.view.frame
