@@ -44,6 +44,10 @@ open class BottomSheetViewController: UIViewController {
     var endHeight: CGFloat = 0
     var startHeight: CGFloat = 0
     
+    var collapsedCornerRadius: CGFloat = 0
+    var halfPresentedCornerRadius: CGFloat = 5
+    var expandedCornerRadius: CGFloat = 15
+    
     var isPopoverVisible = false
     var isPopoverHalfPresented = false
     
@@ -67,6 +71,11 @@ open class BottomSheetViewController: UIViewController {
         self.startHeight = startHeight
         self.endHeight = endHeight
     }
+    public func setupCornerRadiusForState(collapsed: CGFloat, halfPresented: CGFloat, expanded: CGFloat) {
+        collapsedCornerRadius = collapsed
+        halfPresentedCornerRadius = halfPresented
+        expandedCornerRadius = expanded
+    }
     func setupPopover() {
         visualEffectView = UIVisualEffectView()
         visualEffectView.frame = self.view.frame
@@ -84,6 +93,8 @@ open class BottomSheetViewController: UIViewController {
         
         popoverViewController.handlerTapAreaView.addGestureRecognizer(tapGestureRecognizer)
         popoverViewController.view.addGestureRecognizer(panGestureRecognizer)
+        
+        popoverViewController.view.layer.cornerRadius = collapsedCornerRadius
     }
     func disableViewControllerGestures(for duration: Double) {
         popoverViewController.handlerTapAreaView.gestureRecognizers?.first?.isEnabled = false
@@ -220,11 +231,11 @@ open class BottomSheetViewController: UIViewController {
             let cornerRadiusAnimator = UIViewPropertyAnimator(duration: duration, curve: .linear) {
                 switch state {
                 case .expanded:
-                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: 10)
+                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: self.expandedCornerRadius)
                 case .collapsed:
-                    self.popoverViewController.view.layer.cornerRadius = 0
+                    self.popoverViewController.view.layer.cornerRadius = self.collapsedCornerRadius
                 case .halfPresented:
-                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: 5)
+                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: self.halfPresentedCornerRadius)
                 }
             }
             cornerRadiusAnimator.startAnimation()
