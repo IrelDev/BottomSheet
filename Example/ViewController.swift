@@ -28,6 +28,7 @@ class ViewController: BottomSheetViewController {
         viewController = BottomSheetContentsViewController()
         
         setupCornerRadiusForAllStates(collapsed: 0, halfPresented: 5, expanded: 15)
+        //setupCornerRadiusForState(state: .collapsed, value: 50)
         super.viewDidLoad()
     }
 }
