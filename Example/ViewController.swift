@@ -24,8 +24,10 @@ class ViewController: BottomSheetViewController {
         label.center = view.center
         view.addSubview(label)
         
-        isHalfPresentationEnabled = false
+        isHalfPresentationEnabled = true
         viewController = BottomSheetContentsViewController()
+        
+        setupCornerRadiusForState(collapsed: 0, halfPresented: 5, expanded: 15)
         super.viewDidLoad()
     }
 }
