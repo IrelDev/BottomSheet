@@ -27,7 +27,7 @@ class ViewController: BottomSheetViewController {
         isHalfPresentationEnabled = true
         viewController = BottomSheetContentsViewController()
         
-        setupCornerRadiusForState(collapsed: 0, halfPresented: 5, expanded: 15)
+        setupCornerRadiusForAllStates(collapsed: 0, halfPresented: 5, expanded: 15)
         super.viewDidLoad()
     }
 }

@@ -71,7 +71,7 @@ open class BottomSheetViewController: UIViewController {
         self.startHeight = startHeight
         self.endHeight = endHeight
     }
-    public func setupCornerRadiusForState(collapsed: CGFloat, halfPresented: CGFloat, expanded: CGFloat) {
+    public func setupCornerRadiusForAllStates(collapsed: CGFloat, halfPresented: CGFloat, expanded: CGFloat) {
         collapsedCornerRadius = collapsed
         halfPresentedCornerRadius = halfPresented
         expandedCornerRadius = expanded
