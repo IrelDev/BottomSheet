@@ -55,9 +55,11 @@ open class BottomSheetViewController: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaultStartHeight = view.frame.height * 0.07
-        let defaultEndHeight = view.frame.height * 0.90
-        setupSizeWith(startHeight: defaultStartHeight, endHeight: defaultEndHeight)
+        if endHeight == 0 && startHeight == 0 {
+            let defaultStartHeight = view.frame.height * 0.07
+            let defaultEndHeight = view.frame.height * 0.90
+            setupSizeWith(startHeight: defaultStartHeight, endHeight: defaultEndHeight)
+        }
         
         setupPopover()
     }
