@@ -54,7 +54,11 @@ To enable half presentation set `isHalfPresentationEnabled` property to `true`.
 To change animation duration set `animationDuration` property.
 
 ### Popover Start & End Height
-To modify popover startHeight & endHeight call `setupSizeWith(startHeight: CGFloat, endHeight: CGFloat)` function.
+To modify popover startHeight & endHeight call `setupSizeWith(startHeight: CGFloat, endHeight: CGFloat)` method.
+
+### Popover Corner Radius
+To modify popover corner radius for all states call `setupCornerRadiusForState(collapsed: CGFloat, halfPresented: CGFloat, expanded: CGFloat)` method.
+To modify popover corner radius for a single state call `setupCornerRadiusForState(state: State, value: CGFloat)` method.
 
 ## Behaviour
 BottomSheet recognizes taps on the handler and recognizes swipes across the entire view.
