@@ -44,6 +44,10 @@ open class BottomSheetViewController: UIViewController {
     var endHeight: CGFloat = 0
     var startHeight: CGFloat = 0
     
+    var collapsedCornerRadius: CGFloat = 0
+    var halfPresentedCornerRadius: CGFloat = 5
+    var expandedCornerRadius: CGFloat = 15
+    
     var isPopoverVisible = false
     var isPopoverHalfPresented = false
     
@@ -55,15 +59,32 @@ open class BottomSheetViewController: UIViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaultStartHeight = view.frame.height * 0.07
-        let defaultEndHeight = view.frame.height * 0.90
-        setupSizeWith(startHeight: defaultStartHeight, endHeight: defaultEndHeight)
+        if endHeight == 0 && startHeight == 0 {
+            let defaultStartHeight = view.frame.height * 0.07
+            let defaultEndHeight = view.frame.height * 0.90
+            setupSizeWith(startHeight: defaultStartHeight, endHeight: defaultEndHeight)
+        }
         
         setupPopover()
     }
     public func setupSizeWith(startHeight: CGFloat, endHeight: CGFloat) {
         self.startHeight = startHeight
         self.endHeight = endHeight
+    }
+    public func setupCornerRadiusForAllStates(collapsed: CGFloat, halfPresented: CGFloat, expanded: CGFloat) {
+        collapsedCornerRadius = collapsed
+        halfPresentedCornerRadius = halfPresented
+        expandedCornerRadius = expanded
+    }
+    public func setupCornerRadiusForState(state: State, value: CGFloat) {
+        switch state {
+        case .collapsed:
+            collapsedCornerRadius = value
+        case .halfPresented:
+            halfPresentedCornerRadius = value
+        case .expanded:
+            expandedCornerRadius = value
+        }
     }
     func setupPopover() {
         visualEffectView = UIVisualEffectView()
@@ -82,6 +103,8 @@ open class BottomSheetViewController: UIViewController {
         
         popoverViewController.handlerTapAreaView.addGestureRecognizer(tapGestureRecognizer)
         popoverViewController.view.addGestureRecognizer(panGestureRecognizer)
+        
+        popoverViewController.view.layer.cornerRadius = collapsedCornerRadius
     }
     func disableViewControllerGestures(for duration: Double) {
         popoverViewController.handlerTapAreaView.gestureRecognizers?.first?.isEnabled = false
@@ -218,11 +241,11 @@ open class BottomSheetViewController: UIViewController {
             let cornerRadiusAnimator = UIViewPropertyAnimator(duration: duration, curve: .linear) {
                 switch state {
                 case .expanded:
-                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: 10)
+                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: self.expandedCornerRadius)
                 case .collapsed:
-                    self.popoverViewController.view.layer.cornerRadius = 0
+                    self.popoverViewController.view.layer.cornerRadius = self.collapsedCornerRadius
                 case .halfPresented:
-                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: 5)
+                    self.makeTopRoundCorners(uiView: self.popoverViewController.view, radius: self.halfPresentedCornerRadius)
                 }
             }
             cornerRadiusAnimator.startAnimation()
